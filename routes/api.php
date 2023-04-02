@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\City\StoreController;
+use App\Http\Controllers\City\IndexController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/cities', IndexController::class);
 Route::post('/cities', StoreController::class);
