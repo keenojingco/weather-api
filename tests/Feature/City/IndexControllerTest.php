@@ -3,11 +3,8 @@
 namespace Tests\Feature\City;
 
 use App\Models\City;
-use App\Services\OpenWeatherMap\Resources\ForecastResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Mockery\MockInterface;
 use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
@@ -31,7 +28,7 @@ class IndexControllerTest extends TestCase
     ];
 
     /** @test */
-    public function it_can_retrieve_cities(): void
+    public function it_can_retrieve_cities_and_forecast(): void
     {
         Http::fake([
             'api.openweathermap.org/*' => Http::sequence()->push([
