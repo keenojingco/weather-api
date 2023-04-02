@@ -3,7 +3,11 @@
 namespace Tests\Feature\City;
 
 use App\Models\City;
+use App\Services\OpenWeatherMap\Resources\ForecastResource;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class IndexControllerTest extends TestCase
@@ -15,10 +19,13 @@ class IndexControllerTest extends TestCase
     private array $expectedJsonResponse = [
         'data' => [
             '*' => [
-                'id',
-                'name',
-                'created_at',
-                'updated_at',
+                'city' => [
+                    'id',
+                    'name',
+                    'created_at',
+                    'updated_at',
+                ],
+                'forecast'
             ],
         ],
     ];
@@ -26,6 +33,12 @@ class IndexControllerTest extends TestCase
     /** @test */
     public function it_can_retrieve_cities(): void
     {
+        Http::fake([
+            'api.openweathermap.org/*' => Http::sequence()->push([
+                'list' => [],
+            ], 200),
+        ]);
+
         City::factory()->create();
 
         $this->getJson(self::ROUTE)
